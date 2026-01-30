@@ -78,12 +78,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-    if (req.cookies.token) return res.redirect("/profile");
-    res.render("index");
+    if (req.cookies.token) return res.redirect("/overview");
+    res.render("register");
 });
 
 app.get("/login", (req, res) => {
-    if (req.cookies.token) return res.redirect("/profile");
+    if (req.cookies.token) return res.redirect("/overview");
     res.render("login", { message: req.query.message || null });
 });
 
@@ -163,13 +163,13 @@ app.post("/login", async (req, res) => {
 
     const token = jwt.sign({ email: user.email, userid: user._id }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
-    res.redirect("/profile");
+    res.redirect("/overview");
 });
 
 /* ====================== DASHBOARD & FEATURES ====================== */
 
-// 2. DASHBOARD (Profile)
-app.get("/profile", isLoggedIn, async (req, res) => {
+// 2. DASHBOARD (overview)
+app.get("/overview", isLoggedIn, async (req, res) => {
     try {
         const user = await userModel.findOne({ email: req.user.email });
         
@@ -190,10 +190,10 @@ app.get("/profile", isLoggedIn, async (req, res) => {
             reminderDate: { $gte: new Date(), $lte: tenDaysFromNow }
         });
 
-        res.render("profile", { user, totalDocs, medicalDocs, contactsCount, recentDocs, pendingReminders });
+        res.render("overview", { user, totalDocs, medicalDocs, contactsCount, recentDocs, pendingReminders });
     } catch (err) {
         console.log(err);
-        res.send("Error loading profile");
+        res.send("Error loading overview");
     }
 });
 
@@ -219,7 +219,7 @@ app.get("/documents", isLoggedIn, async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.redirect("/profile");
+        res.redirect("/overview");
     }
 });
 
@@ -236,7 +236,7 @@ app.get("/medical-records", isLoggedIn, async (req, res) => {
             title: "Medical Records" 
         });
     } catch (err) {
-        res.redirect("/profile");
+        res.redirect("/overview");
     }
 });
 
