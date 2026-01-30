@@ -20,14 +20,83 @@
             <input type="hidden" name="email" value="<%= email %>">
             <div>
                 <input maxlength="6"
-                    class="w-full text-center text-3xl tracking-[1rem] font-bold border border-zinc-700 rounded-lg px-4 py-3 bg-zinc-800 text-white focus:ring-2 focus:ring-blue-600 outline-none"
+                    class="w-full text-center text-3xl tracking-[1rem] font-bold border border-zinc-700 rounded-lg px-4 py-3 bg-zinc-800 text-white focus:ring-2 focus:ring-blue-600 outline-none placeholder-zinc-600"
                     type="text" name="otp" placeholder="000000" required>
             </div>
-            <button class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-lg font-bold transition-all" type="submit">
+            <button
+                class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-lg font-bold transition-all shadow-lg shadow-blue-500/20"
+                type="submit">
                 Verify Account
             </button>
         </form>
+
+        <div class="mt-6 text-center pt-6 border-t border-zinc-800">
+            <p class="text-xs text-zinc-500 mb-2">Didn't receive the code?</p>
+
+            <form action="/resend-otp" method="POST" id="resendForm" class="inline-block">
+                <input type="hidden" name="email" value="<%= email %>">
+
+                <button id="resendBtn" type="submit"
+                    class="text-blue-500 text-sm font-semibold hover:text-blue-400 transition-colors disabled:text-zinc-600 disabled:cursor-not-allowed">
+                    Resend OTP
+                </button>
+
+                <span id="timerText" class="text-zinc-500 text-xs ml-1 hidden">
+                    (Wait <span id="seconds">10</span>s)
+                </span>
+            </form>
+        </div>
     </div>
+
+    <script>
+        const resendBtn = document.getElementById('resendBtn');
+        const timerText = document.getElementById('timerText');
+        const secondsSpan = document.getElementById('seconds');
+        const COOLDOWN_TIME = 10; // Seconds
+
+        function startTimer(remaining) {
+            // Disable button
+            resendBtn.disabled = true;
+            timerText.classList.remove('hidden');
+
+            let timeLeft = remaining;
+            secondsSpan.innerText = timeLeft;
+
+            const interval = setInterval(() => {
+                timeLeft--;
+                secondsSpan.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    // Re-enable button
+                    resendBtn.disabled = false;
+                    // Reset text just in case
+                    timerText.classList.add('hidden');
+                    localStorage.removeItem('resendOtpTime');
+                }
+            }, 1000);
+        }
+
+        // 1. Check if a timer is already running
+        const lastClickTime = localStorage.getItem('resendOtpTime');
+        if (lastClickTime) {
+            const elapsed = Math.floor((Date.now() - parseInt(lastClickTime)) / 1000);
+            const remaining = COOLDOWN_TIME - elapsed;
+
+            if (remaining > 0) {
+                startTimer(remaining);
+            } else {
+                localStorage.removeItem('resendOtpTime');
+            }
+        }
+
+        // 2. Start timer on click
+        document.getElementById('resendForm').addEventListener('submit', function (e) {
+            localStorage.setItem('resendOtpTime', Date.now().toString());
+        });
+    </script>
 </body>
 
 </html>
+
+```
