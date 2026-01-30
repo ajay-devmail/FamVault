@@ -2,51 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Emergency Contacts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts - FamVault</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-50 p-8">
-    <div class="max-w-4xl mx-auto">
-        <div class="flex items-center gap-3 mb-8">
-            <a href="/profile" class="p-2 bg-white border rounded-lg hover:bg-gray-50"><i data-lucide="arrow-left" class="w-5 h-5"></i></a>
-            <h1 class="text-3xl font-bold text-slate-900">Emergency Contacts</h1>
+<body class="bg-slate-50 min-h-screen flex">
+
+    <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col sticky top-0 h-screen">
+        <div class="p-6 flex items-center gap-3">
+            <div class="bg-blue-600 p-1.5 rounded-lg">
+                <i data-lucide="shield" class="w-6 h-6 text-white fill-current"></i>
+            </div>
+            <span class="text-xl font-bold text-slate-900">FamVault</span>
         </div>
 
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
-            <h2 class="text-lg font-bold mb-4">Add New Contact</h2>
-            <form action="/add-contact" method="POST" class="flex gap-4 items-end">
-                <div class="flex-1">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">Name</label>
-                    <input type="text" name="name" placeholder="e.g. Dr. Smith" required class="w-full px-4 py-2 border rounded-lg">
-                </div>
-                <div class="flex-1">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">Relationship</label>
-                    <input type="text" name="relationship" placeholder="e.g. Cardiologist" required class="w-full px-4 py-2 border rounded-lg">
-                </div>
-                <div class="flex-1">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">Phone</label>
-                    <input type="text" name="phone" placeholder="+1 555..." required class="w-full px-4 py-2 border rounded-lg">
-                </div>
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700">Add</button>
-            </form>
-        </div>
+        <nav class="flex-1 px-4 space-y-1 mt-4">
+            <a href="/overview" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="font-medium">Overview</span>
+            </a>
+            <a href="/documents" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span class="font-medium">Documents</span>
+            </a>
+            <a href="/medical-records" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+                <span class="font-medium">Medical Records</span>
+            </a>
+            <a href="/emergency-contacts" class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg shadow-sm">
+                <i data-lucide="phone" class="w-5 h-5"></i>
+                <span class="font-medium">Contacts</span>
+            </a>
+            <a href="/reminders" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <i data-lucide="bell" class="w-5 h-5"></i>
+                <span class="font-medium">Reminders</span>
+            </a>
+        </nav>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <% contacts.forEach(contact => { %>
-                <div class="bg-white p-6 rounded-xl border border-l-4 border-l-green-500 shadow-sm flex justify-between items-center">
+        <div class="p-4 border-t border-gray-100">
+            <a href="/logout" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                <i data-lucide="log-out" class="w-5 h-5"></i>
+                <span class="font-medium">Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8">
+        <div class="max-w-5xl mx-auto">
+            
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <a href="/overview" class="p-2 bg-white border rounded-lg hover:bg-gray-50 transition-all">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-slate-600"></i>
+                    </a>
+                    <h1 class="text-3xl font-bold text-slate-900">Emergency Contacts</h1>
+                </div>
+                <div class="bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-bold animate-pulse">
+                    Emergency Mode Active
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Add New Contact</h2>
+                <form action="/add-contact" method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                     <div>
-                        <h3 class="font-bold text-xl text-slate-900"><%= contact.name %></h3>
-                        <p class="text-sm text-slate-500"><%= contact.relationship %></p>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Name</label>
+                        <input type="text" name="name" placeholder="e.g. Dr. Smith" required 
+                               class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
-                    <div class="text-right">
-                        <div class="text-lg font-mono font-bold text-slate-700"><%= contact.phone %></div>
-                        <a href="tel:<%= contact.phone %>" class="text-xs text-green-600 font-bold hover:underline">CALL NOW</a>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Relationship</label>
+                        <input type="text" name="relationship" placeholder="e.g. Cardiologist" required 
+                               class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
-                </div>
-            <% }) %>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Phone Number</label>
+                        <input type="tel" name="phone" placeholder="+1 555-0000" required 
+                               class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i>
+                        Add Contact
+                    </button>
+                </form>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <% if (contacts.length > 0) { %>
+                    <% contacts.forEach(contact => { %>
+                        <div class="bg-white p-6 rounded-xl border border-l-4 border-l-green-500 shadow-sm flex justify-between items-center hover:shadow-md transition-shadow">
+                            <div>
+                                <h3 class="font-bold text-xl text-slate-900"><%= contact.name %></h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs font-bold rounded uppercase">
+                                        <%= contact.relationship %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-mono font-bold text-slate-700 mb-2"><%= contact.phone %></div>
+                                <a href="tel:<%= contact.phone %>" 
+                                   class="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 text-green-700 text-xs font-bold rounded-lg hover:bg-green-100 transition-colors">
+                                    <i data-lucide="phone-forwarded" class="w-3.5 h-3.5"></i>
+                                    CALL NOW
+                                </a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="col-span-full py-12 text-center bg-white rounded-xl border border-dashed border-gray-300">
+                        <i data-lucide="users" class="w-12 h-12 text-slate-300 mx-auto mb-4"></i>
+                        <p class="text-slate-500 font-medium">No emergency contacts added yet.</p>
+                    </div>
+                <% } %>
+            </div>
         </div>
-    </div>
-    <script>lucide.createIcons();</script>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
