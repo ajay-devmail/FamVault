@@ -190,6 +190,40 @@ app.post("/verify-otp", async (req, res) => {
     }
 });
 
+// RESEND OTP ROUTE
+app.post("/resend-otp", async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        // 1. Find the user
+        const user = await userModel.findOne({ email });
+        if (!user) return res.redirect("/register?message=User not found");
+
+        // 2. Generate New OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const hashedOTP = await bcryptjs.hash(otp, 10);
+
+        // 3. Update Database
+        user.otp = hashedOTP;
+        user.otpExpires = Date.now() + 600000; // 10 minutes
+        await user.save();
+
+        // 4. Send Email
+        await transporter.sendMail({
+            to: email,
+            subject: "New Verification Code - FamVault",
+            html: `<h3>Your New OTP is: ${otp}</h3>`
+        });
+
+        // 5. Go back to verify page
+        res.render("verify-otp", { email: email, message: "New code sent!" });
+
+    } catch (err) {
+        console.error(err);
+        res.redirect("/register?message=Error resending OTP");
+    }
+});
+
 // LOGIN
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
