@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emergency Contacts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex items-center gap-3 mb-8">
+            <a href="/profile" class="p-2 bg-white border rounded-lg hover:bg-gray-50"><i data-lucide="arrow-left" class="w-5 h-5"></i></a>
+            <h1 class="text-3xl font-bold text-slate-900">Emergency Contacts</h1>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+            <h2 class="text-lg font-bold mb-4">Add New Contact</h2>
+            <form action="/add-contact" method="POST" class="flex gap-4 items-end">
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-slate-500 mb-1">Name</label>
+                    <input type="text" name="name" placeholder="e.g. Dr. Smith" required class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-slate-500 mb-1">Relationship</label>
+                    <input type="text" name="relationship" placeholder="e.g. Cardiologist" required class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-slate-500 mb-1">Phone</label>
+                    <input type="text" name="phone" placeholder="+1 555..." required class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700">Add</button>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <% contacts.forEach(contact => { %>
+                <div class="bg-white p-6 rounded-xl border border-l-4 border-l-green-500 shadow-sm flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-900"><%= contact.name %></h3>
+                        <p class="text-sm text-slate-500"><%= contact.relationship %></p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-mono font-bold text-slate-700"><%= contact.phone %></div>
+                        <a href="tel:<%= contact.phone %>" class="text-xs text-green-600 font-bold hover:underline">CALL NOW</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
