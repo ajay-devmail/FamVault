@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamVault - Secure Family Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom scroll behavior for anchor links */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="font-sans antialiased bg-white selection:bg-blue-100">
+
+    <nav class="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto">
+        <div class="flex items-center gap-2">
+            <i data-lucide="shield" class="w-8 h-8 text-blue-600 fill-current"></i>
+            <span class="text-2xl font-bold text-blue-900">FamVault</span>
+        </div>
+        
+        <div class="hidden md:flex gap-8 text-gray-600 font-medium">
+            <a href="#features" class="hover:text-blue-600 transition-colors">Features</a>
+            <a href="#security" class="hover:text-blue-600">Security</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="/login" class="bg-blue-800 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-900 transition shadow-lg shadow-blue-200">
+                Get Started
+            </a>
+        </div>
+    </nav>
+
+    <header class="max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+            <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-sm font-semibold border border-blue-100">
+                <i data-lucide="shield" class="w-4 h-4"></i>
+                Bank-grade Security for Families
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 leading-[1.15]">
+                Secure Your Family's <span class="text-blue-700">Legacy & Life</span>
+            </h1>
+            
+            <p class="text-lg text-slate-600 leading-relaxed max-w-lg">
+                Important documents, medical records, and emergency contacts—scattered no more. FamVault brings your family's essential information into one secure, accessible digital locker.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="/login" class="bg-blue-700 text-white px-8 py-3.5 rounded-lg font-semibold hover:bg-blue-800 transition flex items-center justify-center gap-2 shadow-xl shadow-blue-100 w-fit">
+                    Start Your Vault <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+    
+            <div class="pt-4 flex items-center gap-4 text-sm text-slate-500 font-medium">
+                <div class="flex -space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"></div>
+                    <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"></div>
+                    <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"></div>
+                    <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"></div>
+                </div>
+                Trusted by 10,000+ families
+            </div>
+        </div>
+    
+        <div class="relative">
+            <div class="absolute -inset-4 bg-gradient-to-r from-blue-100 to-indigo-50 rounded-full blur-3xl opacity-50"></div>
+            <div class="relative bg-white p-2 rounded-2xl shadow-2xl border border-slate-100">
+                <div class="aspect-square bg-blue-50 rounded-xl flex items-center justify-center relative overflow-hidden group">
+                     <div class="w-48 h-64 bg-blue-500 rounded-xl shadow-2xl transform -rotate-12 group-hover:rotate-0 transition duration-500 flex items-center justify-center">
+                        <i data-lucide="lock" class="w-16 h-16 text-white"></i>
+                     </div>
+                     <div class="absolute top-10 right-10 bg-white p-3 rounded-lg shadow-lg animate-bounce delay-100">
+                        <i data-lucide="file-text" class="w-6 h-6 text-blue-500"></i>
+                     </div>
+                     <div class="absolute bottom-20 left-10 bg-white p-3 rounded-lg shadow-lg animate-bounce delay-300">
+                        <i data-lucide="activity" class="w-6 h-6 text-red-500"></i>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="bg-slate-50 py-24 scroll-mt-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">The Chaos of "Safe Keeping"</h2>
+                <p class="text-slate-600 text-lg">
+                    In many families, critical documents are scattered across mobile phones, paper files, and chat apps. During emergencies, finding them is a panic-inducing nightmare.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i data-lucide="file-text" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Scattered Documents</h3>
+                    <p class="text-slate-600 leading-relaxed">Passports in a drawer, insurance in an email, deeds in a box. Accessing them quickly is impossible.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100">
+                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
+                        <i data-lucide="activity" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Medical History Gaps</h3>
+                    <p class="text-slate-600 leading-relaxed">Doctors need history instantly. Searching through old WhatsApp chats for prescriptions is unreliable.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100">
+                    <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center mb-6">
+                        <i data-lucide="users" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Emergency Access</h3>
+                    <p class="text-slate-600 leading-relaxed">If something happens to you, does your family know where to find the life insurance policy?</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="bg-blue-800 text-white py-24 relative overflow-hidden scroll-mt-20">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-blue-700 skew-x-12 opacity-50 transform origin-top-right"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl font-bold mb-6">Centralized, Secure, Simple.</h2>
+                <p class="text-blue-100 text-lg mb-8 leading-relaxed">
+                    FamVault is designed for real life. It handles role-based access so you can manage the vault, while giving family members read-only access to what they need.
+                </p>
+                
+                <ul class="space-y-4 mb-10">
+                    <li class="flex items-center gap-3">
+                        <div class="bg-blue-600/50 p-1 rounded-full border border-blue-400">
+                            <i data-lucide="shield" class="w-4 h-4 text-blue-200"></i>
+                        </div>
+                        <span class="font-medium text-blue-50">Bank-grade encryption for all data</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="bg-blue-600/50 p-1 rounded-full border border-blue-400">
+                            <i data-lucide="shield" class="w-4 h-4 text-blue-200"></i>
+                        </div>
+                        <span class="font-medium text-blue-50">Browser notifications for expiry reminders</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="bg-blue-600/50 p-1 rounded-full border border-blue-400">
+                            <i data-lucide="shield" class="w-4 h-4 text-blue-200"></i>
+                        </div>
+                        <span class="font-medium text-blue-50">Role-based access (Admin vs Member)</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="bg-blue-600/50 p-1 rounded-full border border-blue-400">
+                            <i data-lucide="shield" class="w-4 h-4 text-blue-200"></i>
+                        </div>
+                        <span class="font-medium text-blue-50">Mobile-optimized for emergencies</span>
+                    </li>
+                </ul>
+
+                <a href="/login" class="inline-flex items-center bg-white text-blue-900 px-8 py-3.5 rounded-lg font-bold hover:bg-blue-50 transition shadow-lg">
+                    Let's Secure Your Family <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-50 border-t border-slate-200 py-12 text-center text-slate-500">
+        <p>© 2026 FamVault. Secure Family Management.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

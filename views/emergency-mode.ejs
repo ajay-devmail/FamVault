@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamVault - Emergency Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .bg-card { background-color: #1e293b; }
+    </style>
+</head>
+<body>
+
+    <nav class="border-b border-red-800/50 bg-red-950/30 px-8 py-4 flex justify-between items-center">
+        <a href="/profile" class="flex items-center gap-2 text-slate-300 hover:text-white transition">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            Exit Emergency Mode
+        </a>
+        <div class="flex items-center gap-2 text-red-500 font-bold animate-pulse">
+            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+            EMERGENCY ACTIVE
+        </div>
+        <div></div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-8 space-y-8">
+
+        <div class="bg-card p-8 rounded-2xl shadow-lg border-l-4 border-red-500 flex flex-col md:flex-row gap-8">
+            <div class="flex-1">
+                <h1 class="text-4xl font-bold text-white mb-2"><%= user.name %></h1>
+                <p class="text-slate-400">DOB: 01/15/1980 (44 yrs)</p>
+            </div>
+            <div class="flex-1 grid grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Known Allergies</h3>
+                    <p class="text-white font-medium">Penicillin, Peanuts</p>
+                </div>
+                <div>
+                    <h3 class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Medical Conditions</h3>
+                    <p class="text-white font-medium">Type 2 Diabetes</p>
+                </div>
+                <div class="col-span-2">
+                    <span class="inline-flex items-center gap-1 bg-red-900/50 text-red-200 text-sm font-semibold px-3 py-1 rounded-full">
+                        <i data-lucide="droplet" class="w-4 h-4"></i> Blood Type: O+
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold flex items-center gap-3">
+                    <i data-lucide="phone" class="w-6 h-6 text-red-500"></i>
+                    Emergency Contacts
+                </h2>
+                <button id="addContactBtn" class="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    Add New
+                </button>
+            </div>
+
+            <div id="addContactForm" class="hidden bg-card p-6 rounded-2xl mb-6 border border-slate-700">
+                <h3 class="text-lg font-semibold text-white mb-4">Add New Contact</h3>
+                <form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="contactName" placeholder="Contact Name & Relationship" class="bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 w-full" required>
+                    <input type="tel" id="contactPhone" placeholder="Phone Number (+1 ...)" class="bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 w-full" required>
+                    <div class="md:col-span-2 flex justify-end gap-3 mt-2">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-slate-400 hover:text-white transition">Cancel</button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">Save Contact</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="space-y-4" id="contactList">
+                
+                <div class="block bg-card p-5 rounded-2xl border border-slate-700/50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-green-500/20 p-3 rounded-full text-green-500">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Dr. Emily White</h3>
+                                <p class="text-slate-400">Family Doctor</p>
+                            </div>
+                        </div>
+                        <div class="text-xl font-semibold text-green-500 select-all">+1 (555) 123-4567</div>
+                    </div>
+                </div>
+
+                <div class="block bg-card p-5 rounded-2xl border border-slate-700/50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-green-500/20 p-3 rounded-full text-green-500">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Grandma Sarah</h3>
+                                <p class="text-slate-400">Relative</p>
+                            </div>
+                        </div>
+                        <div class="text-xl font-semibold text-green-500 select-all">+1 (555) 987-6543</div>
+                    </div>
+                </div>
+
+                <div class="block bg-card p-5 rounded-2xl border border-slate-700/50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-red-500/20 p-3 rounded-full text-red-500">
+                                <i data-lucide="siren" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">City Hospital ER</h3>
+                                <p class="text-slate-400">Hospital</p>
+                            </div>
+                        </div>
+                        <div class="text-xl font-bold text-red-500 select-all">911</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bg-card p-8 rounded-2xl shadow-lg border border-slate-700/50">
+            <h2 class="text-xl font-bold flex items-center gap-3 mb-6">
+                <i data-lucide="file-text" class="w-6 h-6 text-blue-500"></i>
+                Insurance Details
+            </h2>
+            <div class="space-y-4 text-sm">
+                <div class="flex justify-between py-3 border-b border-slate-700">
+                    <span class="text-slate-400">Provider</span>
+                    <span class="font-semibold text-white">BlueCross BlueShield</span>
+                </div>
+                <div class="flex justify-between py-3 border-b border-slate-700">
+                    <span class="text-slate-400">Policy Number</span>
+                    <span class="font-semibold text-white tracking-wider">XJ9 992 001</span>
+                </div>
+                <div class="flex justify-between py-3">
+                    <span class="text-slate-400">Group ID</span>
+                    <span class="font-semibold text-white">99201</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. Elements
+        const addBtn = document.getElementById('addContactBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const formContainer = document.getElementById('addContactForm');
+        const contactForm = document.getElementById('contactForm');
+        const contactList = document.getElementById('contactList');
+
+        // 2. Toggle Form Visibility
+        addBtn.addEventListener('click', () => {
+            formContainer.classList.remove('hidden');
+            addBtn.classList.add('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            formContainer.classList.add('hidden');
+            addBtn.classList.remove('hidden');
+            contactForm.reset(); // Clear inputs on cancel
+        });
+
+        // 3. Handle Form Submit (Add to List)
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Stop page refresh
+
+            // Get values
+            const name = document.getElementById('contactName').value;
+            const phone = document.getElementById('contactPhone').value;
+
+            if(!name || !phone) return;
+
+            // Create new HTML structure
+            const newContactHTML = `
+                <div class="block bg-card p-5 rounded-2xl border border-slate-700/50 animate-fade-in">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-green-500/20 p-3 rounded-full text-green-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone w-6 h-6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">${name}</h3>
+                                <p class="text-slate-400">Emergency Contact</p>
+                            </div>
+                        </div>
+                        <div class="text-xl font-semibold text-green-500 select-all">${phone}</div>
+                    </div>
+                </div>
+            `;
+
+            // Append to list
+            contactList.insertAdjacentHTML('beforeend', newContactHTML);
+
+            // Reset and Hide Form
+            contactForm.reset();
+            formContainer.classList.add('hidden');
+            addBtn.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
