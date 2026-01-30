@@ -6,10 +6,12 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
+const multer = require("multer"); //upload
 
 // Import your models
 const userModel = require("./models/user");
 const postModel = require("./models/post");
+const docModel = require("./models/docModel");
 
 // 1. DATABASE CONNECTION
 mongoose.connect("mongodb://127.0.0.1:27017/famvoult")
@@ -32,65 +34,82 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-/* ====================== ROUTES ====================== */
-
-// 1. LANDING PAGE (Root Route)
-// STRICTLY: Always shows Landing Page first, even if logged in.
+// 1. LANDING PAGE
 app.get("/", (req, res) => {
-    res.render("landingpage"); 
+    res.render("landingpage");
 });
 
-// 2. REGISTER PAGE (New Route)
-// Moved here because "/" is now the landing page.
-// This renders your existing "index.ejs" which contains the signup form.
+// 2. REGISTER PAGE
 app.get("/register", (req, res) => {
-    if (req.cookies.token) return res.redirect("/profile");
+    if (req.cookies.token) return res.redirect("/overview");
     res.render("index");
 });
 
 // 3. LOGIN PAGE
-// Accessed when clicking "Get Started" on Landing Page
 app.get("/login", (req, res) => {
-    // If they are already logged in, send them to profile immediately
-    if (req.cookies.token) return res.redirect("/profile");
-    
-    // Otherwise, show the login form
+    if (req.cookies.token) return res.redirect("/overview");
     res.render("login", { message: req.query.message || null });
 });
-
+//4.LOGOUT
 app.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/login");
 });
 
-// ... The rest of your POST routes (register, verify-otp, login) remain exactly the same ...
-
-// --- Placeholder Routes for New Buttons ---
+// --- MAIN FEATURE ROUTES ---
 
 app.get("/documents", isLoggedIn, async (req, res) => {
-    // Later: const docs = await docModel.find({ user: req.user.userid });
-    res.render("documents", { user: req.user }); // You need to create documents.ejs later
+    try {
+        // Fetch documents for the specific logged-in user
+        const docs = await docModel.find({ user: req.user.userid });
+
+        res.render("documents", {
+            user: req.user,
+            documents: docs
+        });
+    } catch (err) {
+        console.error("Error fetching documents:", err);
+        res.status(500).send("Server Error");
+    }
+});
+
+app.get("/api/documents/search", isLoggedIn, async (req, res) => {
+    try {
+        const query = req.query.query;
+
+        // Return empty list if query is empty
+        if (!query) return res.json([]);
+
+        const results = await docModel.find({
+            user: req.user.userid,
+            fileName: { $regex: query, $options: "i" } // Case-insensitive search
+        });
+        res.json(results);
+    } catch (err) {
+        console.error("Search Error:", err);
+        res.status(500).json({ error: "Search failed" });
+    }
 });
 
 app.get("/medical-records", isLoggedIn, async (req, res) => {
-    res.render("medical", { user: req.user }); // You need to create medical.ejs later
+    res.render("medical", { user: req.user });
 });
 
 app.get("/emergency-contacts", isLoggedIn, async (req, res) => {
-    res.render("emergency", { user: req.user }); // You need to create emergency.ejs later
+    res.render("emergency", { user: req.user });
 });
 
 app.get("/upload", isLoggedIn, (req, res) => {
-    res.render("upload", { user: req.user }); // You need to create upload.ejs later
+    res.render("upload", { user: req.user });
 });
 
-// In app.js, inside the list of routes
 app.get("/emergency-mode", isLoggedIn, async (req, res) => {
-    // Fetch the user data to display their name
     const user = await userModel.findOne({ email: req.user.email });
     res.render("emergency-mode", { user });
 });
 
+
+// --- AUTHENTICATION POST ROUTES ---
 
 // REGISTER with Hashed OTP
 app.post("/register", async (req, res) => {
@@ -101,18 +120,14 @@ app.post("/register", async (req, res) => {
         if (user && user.isVerified) return res.redirect("/login?message=Email already exists");
 
         const hashPassword = await bcryptjs.hash(password, 10);
-
-        // Generate 6-digit OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Hash the OTP for security
         const hashedOTP = await bcryptjs.hash(otp, 10);
 
         if (user) {
             // Update existing unverified user
             user.password = hashPassword;
             user.otp = hashedOTP;
-            user.otpExpires = Date.now() + 3600000; // 1 hour
+            user.otpExpires = Date.now() + 600000;
             await user.save();
         } else {
             // Create new user
@@ -121,7 +136,7 @@ app.post("/register", async (req, res) => {
                 email,
                 password: hashPassword,
                 otp: hashedOTP,
-                otpExpires: Date.now() + 3600000 // Valid for 1 hour
+                otpExpires: Date.now() + 600000 // Valid for 10 minutes
             });
         }
 
@@ -132,7 +147,7 @@ app.post("/register", async (req, res) => {
                     <h2>OTP Verification</h2>
                     <p>Enter the code below to verify your email:</p>
                     <h1 style="color:#2563eb; font-size:40px; letter-spacing:10px;">${otp}</h1>
-                    <p>This code expires in <b>1 hour</b>.</p>
+                    <p>This code expires in <b>10 minutes</b>.</p>
                    </div>`
         });
 
@@ -144,7 +159,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// VERIFY OTP with Bcryptjs Compare
+// VERIFY OTP
 app.post("/verify-otp", async (req, res) => {
     try {
         const { email, otp } = req.body;
@@ -152,20 +167,17 @@ app.post("/verify-otp", async (req, res) => {
 
         if (!user) return res.send("User not found.");
 
-        // 1. Check if expired
         if (user.otpExpires < Date.now()) {
-            await userModel.deleteOne({ email }); // Optional: cleanup
+            await userModel.deleteOne({ email });
             return res.send("❌ OTP expired. Please register again.");
         }
 
-        // 2. Compare hashed OTP
         const validOTP = await bcryptjs.compare(otp, user.otp);
 
         if (!validOTP) {
             return res.send("❌ Invalid code. Check your email.");
         }
 
-        // 3. Success: Update user status
         await userModel.updateOne({ email }, {
             isVerified: true,
             $unset: { otp: 1, otpExpires: 1 }
@@ -189,15 +201,18 @@ app.post("/login", async (req, res) => {
     const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) return res.redirect("/login?message=Wrong password");
 
+    // Create Token with 'userid' to match your other routes
     const token = jwt.sign({ email: user.email, userid: user._id }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
-    res.redirect("/profile");
+    res.redirect("/overview");
 });
 
-app.get("/profile", isLoggedIn, async (req, res) => {
+app.get("/overview", isLoggedIn, async (req, res) => {
     const user = await userModel.findOne({ email: req.user.email }).populate("posts");
-    res.render("profile", { user });
+    res.render("overview", { user });
 });
+
+// Those belong in your documents.ejs <script> tag.
 
 function isLoggedIn(req, res, next) {
     if (!req.cookies.token) return res.redirect("/login");
