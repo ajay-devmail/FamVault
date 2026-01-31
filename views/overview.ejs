@@ -47,6 +47,11 @@
             </nav>
 
             <div class="p-4 border-t border-gray-100 space-y-1">
+                <a href="/profile" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span class="font-medium">Profile</span>
+                </a>
+                
                 <a href="/settings" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
                     <i data-lucide="settings" class="w-5 h-5"></i>
                     <span class="font-medium">Settings</span>
@@ -81,9 +86,7 @@
             </header>
 
             <div class="max-w-7xl mx-auto px-8 py-8">
-                
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    
                     <a href="/documents" class="block bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-100 transition group">
                         <div class="flex justify-between items-start mb-4">
                             <div class="text-slate-500 font-medium text-sm">Total Documents</div>
@@ -130,7 +133,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
                     <div class="lg:col-span-2">
                         <div class="bg-white rounded-xl border border-gray-100 shadow-sm">
                             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
@@ -156,7 +158,6 @@
                                                 <h3 class="font-medium text-slate-900 truncate"><%= doc.title %></h3>
                                                 <p class="text-xs text-slate-500 capitalize"><%= doc.category %> • <%= new Date(doc.createdAt).toLocaleDateString() %></p>
                                             </div>
-                                            
                                             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <a href="/view-document/<%= doc._id %>" target="_blank" title="Open" class="p-2 text-slate-400 hover:text-blue-600">
                                                     <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -173,7 +174,6 @@
                     </div>
 
                     <div class="space-y-6">
-                        
                         <div class="bg-orange-50 border border-orange-100 rounded-xl p-6">
                             <div class="flex items-center gap-2 text-orange-700 font-bold mb-2">
                                 <i data-lucide="alert-triangle" class="w-5 h-5"></i>
@@ -216,10 +216,8 @@
                                 <% } %>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </main>
     </div>
