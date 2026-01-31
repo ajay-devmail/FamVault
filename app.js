@@ -9,6 +9,7 @@ const nodemailer = require("nodemailer");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const crypto = require('crypto');
 
 // --- IMPORT MODELS ---
 const userModel = require("./models/user");
@@ -90,6 +91,39 @@ app.get("/login", (req, res) => {
 app.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/login");
+});
+
+app.get('/forgot-password', (req, res) => {
+  res.render('forgot-password');
+});
+// Forgot Password Route
+app.post('/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await userModel.findOne({ email });
+
+        if (user) {
+            // 2. Generate and Hash OTP 
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            const hashedOTP = await bcryptjs.hash(otp, 10);
+            
+            user.otp = hashedOTP;
+            user.otpExpires = Date.now() + 600000; 
+            await user.save();
+            await transporter.sendMail({
+                to: email,
+                subject: "Password Reset Code - FamVault",
+                html: `<h3>Your Password Reset Code is: <b>${otp}</b></h3>
+                       <p>This code expires in 10 minutes.</p>`
+            });
+            return res.render("verify-otp", { email: email });
+        }
+        //if exist
+        res.render("login", { message: "If an account exists, an OTP has been sent." });
+    } catch (err) {
+        console.error("MAILING ERROR:", err);
+        res.status(500).send("Error sending email. Check server logs.");
+    }
 });
 
 // REGISTER LOGIC
