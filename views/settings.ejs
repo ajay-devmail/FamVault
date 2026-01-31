@@ -83,7 +83,7 @@
                                 <p class="text-slate-500"><%= user.email %></p>
                             </div>
                         </div>
-
+<!-- Update overview information -->
                         <form action="/update-overview" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
@@ -100,45 +100,101 @@
                         </form>
                     </div>
                 </div>
-
+<!-- Change password -->
                 <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-gray-100">
                         <h2 class="text-lg font-bold text-slate-900">Security</h2>
                         <p class="text-sm text-slate-500">Manage your password and authentication.</p>
                     </div>
-                    <div class="p-6">
-                        <form action="/change-password" method="POST" class="space-y-4 max-w-md">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Current Password</label>
-                                <input type="password" name="currentPassword" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none border-gray-300">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">New Password</label>
-                                <input type="password" name="newPassword" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none border-gray-300">
-                            </div>
-                            <div class="pt-2">
-                                <button type="submit" class="px-6 py-2 bg-white border border-gray-300 text-slate-700 font-medium rounded-lg hover:bg-gray-50 transition">Update Password</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                    <div class="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+    
+    <div class="bg-gray-50 px-8 py-6 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800">Security & Login</h2>
+        <p class="text-sm text-gray-500 mt-1">Update your password to keep your account secure.</p>
+    </div>
 
-                <div class="bg-red-50 rounded-xl border border-red-100 overflow-hidden">
-                    <div class="p-6">
-                        <h2 class="text-lg font-bold text-red-700">Danger Zone</h2>
-                        <p class="text-sm text-red-600/80 mb-6">Irreversible actions for your account.</p>
-                        
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="font-medium text-red-900">Delete Account</h3>
-                                <p class="text-sm text-red-700/70">Permanently remove your account and all documents.</p>
-                            </div>
-                            <button onclick="if(confirm('Are you sure? This cannot be undone.')) window.location.href='/delete-account'" class="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-lg hover:bg-red-700 transition">
-                                Delete Account
-                            </button>
-                        </div>
-                    </div>
+    <div class="p-8">
+        <form action="/change-password" method="POST" class="space-y-6">
+            
+            <div>
+                <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                    Current Password
+                </label>
+                <input 
+                    type="password" 
+                    id="currentPassword" 
+                    name="currentPassword" 
+                    required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                    placeholder="Enter your current password"
+                >
+            </div>
+
+            <div>
+                <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                    New Password
+                </label>
+                <input 
+                    type="password" 
+                    id="newPassword" 
+                    name="newPassword" 
+                    required
+                    minlength="8"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                    placeholder="Minimum 8 characters"
+                >
+            </div>
+
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                    Confirm New Password
+                </label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                    placeholder="Re-enter your new password"
+                >
+            </div>
+
+            <div class="pt-4 flex items-center justify-end space-x-4">
+                <button type="button" class="px-6 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-colors">
+                    Update Password
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
                 </div>
+<!-- Delete Account -->
+    <div class="max-w-2xl mx-auto mt-8 bg-white shadow-lg rounded-xl overflow-hidden border border-red-200">
+    
+    <div class="bg-red-50 px-8 py-6 border-b border-red-100">
+        <h2 class="text-xl font-semibold text-red-700">Danger Zone</h2>
+        <p class="text-sm text-red-600 mt-1">Irreversible actions regarding your account.</p>
+    </div>
+
+    <div class="p-8 flex items-center justify-between">
+        <div>
+            <h3 class="text-sm font-medium text-gray-900">Delete Account</h3>
+            <p class="text-sm text-gray-500 mt-1">
+                Once you delete your account, there is no going back. Please be certain.
+            </p>
+        </div>
+
+        <form action="/delete-account" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
+            <button type="submit" class="px-5 py-2.5 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                Delete Account
+            </button>
+        </form>
+    </div>
+</div>
 
                 <div class="text-center text-sm text-slate-400 pb-8">
                     FamVault v1.0.0 • Secured by 256-bit Encryption
