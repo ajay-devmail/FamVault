@@ -21,7 +21,7 @@ const documentSchema = new mongoose.Schema({
     
     // Tracking
     createdAt: { type: Date, default: Date.now },
-    lastAccessed: { type: Date, default: Date.now } // For "Recently Opened"
+    lastAccessed: { type: Date, default: Date.now }, // For "Recently Opened"
 
         // Add this inside your documentSchema
 folderId: {
