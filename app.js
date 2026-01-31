@@ -96,6 +96,9 @@ app.get("/logout", (req, res) => {
 app.post("/register", async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        if (password.length < 8) {
+            return res.render("register", { error: "Password must be at least 8 characters long." });
+        }
         let user = await userModel.findOne({ email });
 
         if (user && user.isVerified) return res.redirect("/login?message=Email already exists");
@@ -105,26 +108,63 @@ app.post("/register", async (req, res) => {
         const hashedOTP = await bcryptjs.hash(otp, 10);
 
         if (user) {
+            // Update existing unverified user
             user.password = hashPassword;
             user.otp = hashedOTP;
-            user.otpExpires = Date.now() + 3600000;
+            user.otpExpires = Date.now() + 600000;
             await user.save();
         } else {
+            // Create new user
             await userModel.create({
-                name, email,
+                name,
+                email,
                 password: hashPassword,
                 otp: hashedOTP,
-                otpExpires: Date.now() + 3600000
+                otpExpires: Date.now() + 600000 // Valid for 10 minutes
             });
         }
 
         await transporter.sendMail({
             to: email,
             subject: "Verify Your FamVault Account",
-            html: `<h3>Your Verification Code: ${otp}</h3>`
+            html: `
+            <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8f9fa; padding: 20px; border-radius: 12px;">
+                <div style="background-color: #ffffff; padding: 40px; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div style="display: inline-block; background-color: #2563eb; padding: 12px; border-radius: 12px;">
+                            <span style="color: white; font-size: 24px; font-weight: bold;">🛡️</span>
+                        </div>
+                        <h2 style="color: #1e293b; margin-top: 15px; font-size: 24px; font-weight: 700;">FamVault</h2>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <h3 style="color: #334155; font-size: 20px; margin-bottom: 10px;">Verify your email address</h3>
+                        <p style="color: #64748b; font-size: 16px; margin-bottom: 30px; line-height: 1.5;">
+                            Welcome to FamVault! Please enter the 6-digit code below to verify your account and secure your digital legacy.
+                        </p>
+
+                        <div style="background-color: #eff6ff; padding: 20px; border-radius: 8px; display: inline-block; margin-bottom: 30px; border: 1px dashed #2563eb;">
+                            <h1 style="color: #2563eb; font-size: 36px; letter-spacing: 8px; margin: 0; font-family: monospace; font-weight: bold;">${otp}</h1>
+                        </div>
+
+                        <p style="color: #94a3b8; font-size: 14px;">
+                            This code will expire in <b>10 minutes</b>.
+                        </p>
+                    </div>
+
+                    <div style="border-top: 1px solid #e2e8f0; margin: 30px 0;"></div>
+
+                    <div style="text-align: center; color: #94a3b8; font-size: 12px;">
+                        <p>If you didn't request this code, you can safely ignore this email.</p>
+                        <p>&copy; ${new Date().getFullYear()} FamVault Security Team.</p>
+                    </div>
+                </div>
+            </div>`
         });
 
         res.render("verify-otp", { email: email });
+
     } catch (err) {
         console.error(err);
         res.status(500).send("Registration Error");
@@ -136,17 +176,63 @@ app.post("/verify-otp", async (req, res) => {
     try {
         const { email, otp } = req.body;
         const user = await userModel.findOne({ email });
+
         if (!user) return res.send("User not found.");
 
-        if (user.otpExpires < Date.now()) return res.send("❌ OTP expired.");
+        if (user.otpExpires < Date.now()) {
+            await userModel.deleteOne({ email });
+            return res.send("❌ OTP expired. Please register again.");
+        }
 
         const validOTP = await bcryptjs.compare(otp, user.otp);
-        if (!validOTP) return res.send("❌ Invalid code.");
 
-        await userModel.updateOne({ email }, { isVerified: true, $unset: { otp: 1, otpExpires: 1 } });
+        if (!validOTP) {
+            return res.send("❌ Invalid code. Check your email.");
+        }
+
+        await userModel.updateOne({ email }, {
+            isVerified: true,
+            $unset: { otp: 1, otpExpires: 1 }
+        });
+
+        console.log(`✅ ${email} is now verified.`);
         res.redirect("/login?message=Verified! You can now login.");
     } catch (err) {
         res.status(500).send("Verification Error");
+    }
+});
+
+// RESEND OTP ROUTE
+app.post("/resend-otp", async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // 1. Find the user
+        const user = await userModel.findOne({ email });
+        if (!user) return res.redirect("/register?message=User not found");
+
+        // 2. Generate New OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const hashedOTP = await bcryptjs.hash(otp, 10);
+
+        // 3. Update Database
+        user.otp = hashedOTP;
+        user.otpExpires = Date.now() + 600000; // 10 minutes
+        await user.save();
+
+        // 4. Send Email
+        await transporter.sendMail({
+            to: email,
+            subject: "New Verification Code - FamVault",
+            html: `<h3>Your New OTP is: ${otp}</h3>`
+        });
+
+        // 5. Go back to verify page
+        res.render("verify-otp", { email: email, message: "New code sent!" });
+
+    } catch (err) {
+        console.error(err);
+        res.redirect("/register?message=Error resending OTP");
     }
 });
 
@@ -161,9 +247,15 @@ app.post("/login", async (req, res) => {
     const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) return res.redirect("/login?message=Wrong password");
 
+    // Create Token with 'userid' to match your other routes
     const token = jwt.sign({ email: user.email, userid: user._id }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
     res.redirect("/overview");
+});
+
+app.get("/overview", isLoggedIn, async (req, res) => {
+    const user = await userModel.findOne({ email: req.user.email }).populate("posts");
+    res.render("overview", { user });
 });
 
 /* ====================== DASHBOARD & FEATURES ====================== */
