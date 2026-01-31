@@ -12,6 +12,25 @@
     </style>
 </head>
 <body class="bg-gray-50 text-slate-800">
+<div id="folderModal"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl mx-4">
+            <h3 class="text-xl font-bold text-slate-900 mb-4">Create New Folder</h3>
+            <form action="/create-folder" method="POST">
+                <input type="text" name="folderName" placeholder="e.g. Taxes, House Docs, Insurance" required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6">
+
+                <div class="flex gap-3 justify-end">
+                    <button type="button" onclick="toggleModal()"
+                        class="px-4 py-2 text-slate-600 hover:bg-gray-100 rounded-lg transition">Cancel</button>
+                    <button type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 shadow-md">
+                        Create Folder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="flex h-screen overflow-hidden">
         
