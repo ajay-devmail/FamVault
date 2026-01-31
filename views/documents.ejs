@@ -1,205 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FamVault - Documents</title>
+    <title><%= title %> - FamVault</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
 </head>
+<body class="bg-gray-50 font-sans text-slate-800">
 
-<body class="bg-gray-50 text-slate-800">
-
-    <div class="flex h-screen overflow-hidden">
-
-        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
-            <div class="p-6 flex items-center gap-3">
-                <div class="bg-blue-600 p-1.5 rounded-lg">
-                    <i data-lucide="shield" class="w-6 h-6 text-white fill-current"></i>
-                </div>
-                <span class="text-xl font-bold text-slate-900">FamVault</span>
-            </div>
-
-            <nav class="flex-1 px-4 space-y-1 mt-4">
-                <a href="/overview"
-                    class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5 group-hover:text-blue-600"></i>
-                    <span class="font-medium">Overview</span>
-                </a>
-
-                <a href="/documents"
-                    class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg transition-colors shadow-sm shadow-blue-200">
-                    <i data-lucide="file-text" class="w-5 h-5"></i>
-                    <span class="font-medium">Documents</span>
-                </a>
-
-                <a href="/medical-records"
-                    class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="heart-pulse" class="w-5 h-5 group-hover:text-blue-600"></i>
-                    <span class="font-medium">Medical Records</span>
-                </a>
-
-                <a href="/emergency-contacts"
-                    class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="phone" class="w-5 h-5 group-hover:text-blue-600"></i>
-                    <span class="font-medium">Emergency Contacts</span>
-                </a>
-
-                <a href="/reminders"
-                    class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="bell" class="w-5 h-5 group-hover:text-blue-600"></i>
-                    <span class="font-medium">Reminders</span>
-                </a>
-            </nav>
-
-            <div class="p-4 border-t border-gray-100 space-y-1">
-                <a href="/settings"
-                    class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                    <i data-lucide="settings" class="w-5 h-5"></i>
-                    <span class="font-medium">Settings</span>
-                </a>
-                <a href="/logout"
-                    class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    <span class="font-medium">Sign Out</span>
-                </a>
-            </div>
+    <div class="flex h-screen">
+        <aside class="w-64 bg-white border-r p-6 hidden md:block">
+            <h1 class="text-xl font-bold mb-8 flex items-center gap-2">
+                <i data-lucide="shield" class="text-blue-600"></i> FamVault
+            </h1>
+            <a href="/overview" class="block mb-4 text-slate-500 hover:text-blue-600">← Back to Dashboard</a>
         </aside>
 
-        <main class="flex-1 overflow-y-auto">
-            <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
-                <div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
-                    <div>
-                        <h1 class="text-2xl font-bold text-slate-900">Documents Vault</h1>
-                        <p class="text-slate-500 text-sm mt-1">Manage and secure your important files.</p>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <button onclick="window.location.href='/emergency-mode'"
-                            class="flex items-center gap-2 px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition font-medium">
-                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                            Emergency Mode
-                        </button>
-
-                        <a href="/upload"
-                            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-md shadow-blue-200">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            Add Document
-                        </a>
-                    </div>
-                </div>
-            </header>
-
-            <div class="max-w-7xl mx-auto px-8 py-8">
-
-                <div
-                    class="bg-white p-2 rounded-xl border border-gray-200 shadow-sm mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="relative w-full md:w-96">
-                        <i data-lucide="search"
-                            class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                        <input type="text" placeholder="Search documents..."
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div
-                        class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 px-2 no-scrollbar">
-                        <i data-lucide="filter" class="w-4 h-4 text-gray-400 mr-1"></i>
-                        <button
-                            class="px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold whitespace-nowrap transition hover:bg-blue-200">All</button>
-                        <button
-                            class="px-4 py-1.5 rounded-full bg-gray-50 text-gray-600 text-xs font-semibold whitespace-nowrap border border-gray-200 hover:bg-gray-100 transition">Insurance</button>
-                        <button
-                            class="px-4 py-1.5 rounded-full bg-gray-50 text-gray-600 text-xs font-semibold whitespace-nowrap border border-gray-200 hover:bg-gray-100 transition">Medical</button>
-                        <button
-                            class="px-4 py-1.5 rounded-full bg-gray-50 text-gray-600 text-xs font-semibold whitespace-nowrap border border-gray-200 hover:bg-gray-100 transition">Property</button>
-                        <button
-                            class="px-4 py-1.5 rounded-full bg-gray-50 text-gray-600 text-xs font-semibold whitespace-nowrap border border-gray-200 hover:bg-gray-100 transition">Identity</button>
-                    </div>
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-6xl mx-auto">
+                
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold text-slate-900"><%= title %></h1>
+                    <a href="/upload" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Upload
+                    </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <% if (documents && documents.length> 0) { %>
-                        <% documents.forEach(doc=> { %>
-                            <div
-                                class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group relative flex flex-col h-full">
+                <form action="/documents" method="GET" class="mb-8">
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-3 w-5 h-5 text-slate-400"></i>
+                        <input type="text" name="search" value="<%= search %>" placeholder="Search by document name..." 
+                        class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-100 shadow-sm">
+                    </div>
+                </form>
 
-                                <span
-                                    class="absolute top-6 right-6 px-2.5 py-1 rounded-md bg-gray-50 text-xs font-bold uppercase tracking-wider text-gray-500 border border-gray-100">
-                                    <%= doc.category %>
-                                </span>
-
-                                <div
-                                    class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                                    <i data-lucide="file-text" class="w-6 h-6"></i>
-                                </div>
-
-                                <div class="flex-1">
-                                    <h3 class="font-bold text-slate-900 mb-1 line-clamp-1" title="<%= doc.name %>">
-                                        <%= doc.name %>
-                                    </h3>
-                                    <p class="text-xs text-slate-500 font-medium mb-4">
-                                        <%= doc.date %> • <%= doc.size %>
-                                    </p>
-
-                                    <% if(doc.expiry) { %>
-                                        <div
-                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-600 rounded-md mb-4 border border-amber-100">
-                                            <i data-lucide="clock" class="w-3 h-3"></i>
-                                            <span class="text-[10px] font-bold uppercase">Expires: <%= doc.expiry %>
-                                            </span>
-                                        </div>
-                                        <% } %>
-                                </div>
-
-                                <div class="flex justify-between items-center pt-4 mt-2 border-t border-gray-50">
-                                    <a href="/documents/view/<%= doc.id %>"
-                                        class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                                        View
-                                    </a>
-                                    <button onclick="deleteDocument('<%= doc.id %>')"
-                                        class="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <% }) %>
-                                <% } else { %>
-                                    <div
-                                        class="col-span-full py-16 text-center bg-white rounded-2xl border border-dashed border-gray-200">
-                                        <div
-                                            class="w-16 h-16 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <i data-lucide="folder-open" class="w-8 h-8"></i>
-                                        </div>
-                                        <h3 class="text-lg font-medium text-slate-900">No documents yet</h3>
-                                        <p class="text-slate-500 text-sm mt-1">Upload your first document to get
-                                            started.</p>
+                <% if(docs.length === 0) { %>
+                    <div class="text-center py-20 text-slate-400">
+                        <i data-lucide="folder-open" class="w-12 h-12 mx-auto mb-3 opacity-50"></i>
+                        <p>No documents found.</p>
+                    </div>
+                <% } else { %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <% docs.forEach(doc => { %>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="p-3 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition">
+                                        <i data-lucide="<%= doc.category === 'medical' ? 'heart-pulse' : 'file-text' %>" class="w-6 h-6"></i>
                                     </div>
-                                    <% } %>
-                </div>
+                                    <div class="flex gap-2">
+                                        <a href="/view-document/<%= doc._id %>" target="_blank" class="p-2 text-slate-400 hover:text-blue-600" title="Open">
+                                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                                        </a>
+                                        <a href="/delete-doc/<%= doc._id %>" class="p-2 text-slate-400 hover:text-red-600" title="Delete" onclick="return confirm('Delete this file?')">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="font-bold text-slate-900 truncate"><%= doc.title %></h3>
+                                <p class="text-xs text-slate-500 mb-4"><%= new Date(doc.createdAt).toLocaleDateString() %> • <%= doc.fileType.toUpperCase() %></p>
 
+                                <% if(doc.hasReminder) { %>
+                                    <div class="text-xs bg-amber-50 text-amber-700 px-3 py-1 rounded-full inline-flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3 h-3"></i> 
+                                        <%= doc.reminderNote %> (<%= new Date(doc.reminderDate).toLocaleDateString() %>)
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
             </div>
         </main>
     </div>
-
-    <script>
-        lucide.createIcons();
-
-        // Simple delete confirmation (You can replace with a modal)
-        function deleteDocument(id) {
-            if (confirm('Are you sure you want to delete this document?')) {
-                // Add your delete logic here, e.g., window.location.href = '/delete/' + id;
-                console.log('Deleting document:', id);
-            }
-        }
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
-
 </html>
