@@ -323,29 +323,58 @@ app.get("/overview", isLoggedIn, async (req, res) => {
     }
 });
 
-// 3. DOCUMENTS PAGE (List & Search)
+/* ====================== FOLDER & DOCUMENT LOGIC ====================== */
 app.get("/documents", isLoggedIn, async (req, res) => {
     try {
-        const user = await userModel.findOne({ email: req.user.email });
         const searchQuery = req.query.search || "";
-        
-        const query = { 
-            user: user._id,
-            title: { $regex: searchQuery, $options: "i" } 
+        const folderFilter = req.query.folder || null;
+
+        // 1. Fetch folders belonging to this user
+        const folders = await Folder.find({ userId: req.user.userid });
+
+        // 2. Build Query for documents
+        const query = {
+            user: req.user.userid,
+            title: { $regex: searchQuery, $options: "i" }
         };
 
+        // If a specific folder is clicked, filter docs by that folderId
+        if (folderFilter) {
+            query.folderId = folderFilter;
+        }
+
         const docs = await docModel.find(query).sort({ createdAt: -1 });
-        
-        // Pass 'title' to fix the ReferenceError
-        res.render("documents", { 
-            user, 
-            docs, 
-            search: searchQuery, 
-            title: "All Documents" 
+
+        res.render("documents", {
+            docs: docs,
+            folders: folders,
+            search: searchQuery,
+            currentFolderId: folderFilter, // Pass the current folder ID
+            title: folderFilter ? "Folder View" : "All Documents"
         });
     } catch (err) {
-        console.log(err);
+        console.error("Error loading documents:", err);
         res.redirect("/overview");
+    }
+});
+
+// POST: Create Folder
+app.post('/create-folder', isLoggedIn, async (req, res) => {
+    try {
+        const { folderName } = req.body;
+
+        if (!folderName) {
+            return res.status(400).send("Folder name is required");
+        }
+        await Folder.create({
+            name: folderName,
+            userId: req.user.userid
+        });
+
+        res.redirect('/documents');
+    } catch (err) {
+        console.error("Folder Creation Error:", err);
+        res.status(500).send("Error creating folder");
     }
 });
 
