@@ -2,17 +2,12 @@ const mongoose = require('mongoose');
 
 const folderSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true },
-    user: { // Changed from userId to user to match document model consistency
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user', 
+        ref: 'user', // Ensure this matches your userModel name
         required: true
-    },
-    category: { 
-        type: String, 
-        enum: ['document', 'medical'], 
-        default: 'document' 
     },
     createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('folder', folderSchema);
+module.exports = mongoose.model('Folder', folderSchema);
