@@ -22,6 +22,13 @@ const documentSchema = new mongoose.Schema({
     // Tracking
     createdAt: { type: Date, default: Date.now },
     lastAccessed: { type: Date, default: Date.now } // For "Recently Opened"
+
+        // Add this inside your documentSchema
+folderId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'folder',
+        default: null // If null, the document is in the "General" area
+    },
 });
 
 module.exports = mongoose.model("document", documentSchema);
