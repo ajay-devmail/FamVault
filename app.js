@@ -473,6 +473,117 @@ app.get("/settings", isLoggedIn, async (req, res) => {
     const user = await userModel.findOne({ email: req.user.email });
     res.render("settings", { user });
 });
+app.post('/update-overview', async (req, res) => {
+    try {
+        // 1. Auth: Get the token from cookies
+        const token = req.cookies.token;
+        if (!token) return res.redirect("/login?message=Please log in");
+
+        // 2. Decode the token to get the User ID
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userid;
+
+        // 3. Get the data from the form
+        // Your input tag is: <input name="name" ... >
+        const { name } = req.body;
+
+        // 4. Update the User in the Database
+        await userModel.findOneAndUpdate(
+            { _id: userId },
+            { name: name } // Updates the 'name' field in your DB
+        );
+
+        console.log("Profile name updated to:", name);
+
+        // 5. Redirect back to the overview page to see changes
+        res.redirect('/overview');
+
+    } catch (error) {
+        console.error("Update Error:", error);
+        res.status(500).send("Error updating profile");
+    }
+});
+// 2. Route to HANDLE the form submission (POST) - This is what you are missing!
+app.post('/change-password', async (req, res) => {
+    try {
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+
+        // 1. Validate: Check if new passwords match
+        if (newPassword !== confirmPassword) {
+            return res.send("New passwords do not match");
+        }
+
+        // 2. Auth: Get User ID from the Token (Cookie)
+        const token = req.cookies.token;
+        if (!token) return res.redirect("/login");
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userid;
+
+        // 3. Database: Find the user
+        const user = await userModel.findOne({ _id: userId });
+        if (!user) return res.redirect("/login");
+
+        // 4. Security: Verify the CURRENT password matches the database
+        const isMatch = await bcryptjs.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.send("Incorrect current password"); 
+        }
+
+        // 5. Hash the NEW password
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(newPassword, salt);
+
+        // 6. Update the database
+        await userModel.findOneAndUpdate(
+            { _id: userId },
+            { password: hashedPassword }
+        );
+
+        console.log("Password updated successfully for user:", userId);
+        
+        // 7. Success: Redirect back to settings or logout
+        res.redirect('/settings'); 
+        
+    } catch (error) {
+        console.error("Change Password Error:", error);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+app.post('/delete-account', async (req, res) => {
+    try {
+        // 1. GET THE TOKEN FROM COOKIES
+        const token = req.cookies.token; 
+
+        // If no token, they aren't logged in
+        if (!token) {
+            return res.redirect("/login?message=Please log in to perform this action");
+        }
+
+        // 2. VERIFY & DECODE THE TOKEN
+        // We use the same secret you used in your login route
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // In your login route, you signed it as: { userid: user._id }
+        // So we extract it here:
+        const userId = decoded.userid; 
+
+        console.log("Authorized to delete User ID:", userId);
+
+        // 3. DELETE THE USER
+        await userModel.findByIdAndDelete(userId);
+
+        // 4. CLEAR THE COOKIE & REDIRECT
+        res.clearCookie("token");
+        res.redirect("/");
+
+    } catch (error) {
+        console.error("Delete Error:", error);
+        res.status(500).send("Something went wrong deleting your account.");
+    }
+});
 
 // --- SERVER START ---
 app.listen(3001, () => console.log("🚀 Server running on http://localhost:3001"));
