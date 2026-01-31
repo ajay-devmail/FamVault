@@ -12,7 +12,14 @@ const userSchema = new mongoose.Schema({
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "post"
-    }]
+    }],
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+
+    // ADD THESE TWO FIELDS:
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
+
 
 module.exports = mongoose.model("user", userSchema);
