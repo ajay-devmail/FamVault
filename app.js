@@ -32,7 +32,7 @@ app.use(express.static("public"));
 // --- MULTER CONFIG (File Uploads) ---
 // 1. Ensure 'public/uploads' directory exists
 const uploadDir = './public/uploads';
-if (!fs.existsSync(uploadDir)){
+if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
@@ -94,7 +94,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.get('/forgot-password', (req, res) => {
-  res.render('forgot-password');
+    res.render('forgot-password');
 });
 // Forgot Password Route
 app.post('/forgot-password', async (req, res) => {
@@ -106,9 +106,9 @@ app.post('/forgot-password', async (req, res) => {
             // 2. Generate and Hash OTP 
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             const hashedOTP = await bcryptjs.hash(otp, 10);
-            
+
             user.otp = hashedOTP;
-            user.otpExpires = Date.now() + 600000; 
+            user.otpExpires = Date.now() + 600000;
             await user.save();
             await transporter.sendMail({
                 to: email,
@@ -298,7 +298,7 @@ app.get("/overview", isLoggedIn, async (req, res) => {
 app.get("/overview", isLoggedIn, async (req, res) => {
     try {
         const user = await userModel.findOne({ email: req.user.email });
-        
+
         // Fetch stats
         const totalDocs = await docModel.countDocuments({ user: user._id });
         const medicalDocs = await docModel.countDocuments({ user: user._id, category: 'medical' });
@@ -383,12 +383,12 @@ app.get("/medical-records", isLoggedIn, async (req, res) => {
     try {
         const user = await userModel.findOne({ email: req.user.email });
         const docs = await docModel.find({ user: user._id, category: 'medical' }).sort({ createdAt: -1 });
-        
-        res.render("documents", { 
-            user, 
-            docs, 
-            search: "", 
-            title: "Medical Records" 
+
+        res.render("documents", {
+            user,
+            docs,
+            search: "",
+            title: "Medical Records"
         });
     } catch (err) {
         res.redirect("/overview");
@@ -405,7 +405,7 @@ app.post("/upload", isLoggedIn, upload.single("file"), async (req, res) => {
         if (!req.file) return res.send("No file uploaded.");
 
         const { title, category, hasReminder, reminderDate, reminderNote } = req.body;
-        
+
         await docModel.create({
             user: req.user.userid,
             title: title || req.file.originalname,
@@ -435,7 +435,7 @@ app.get("/view-document/:id", isLoggedIn, async (req, res) => {
             { lastAccessed: Date.now() },
             { new: true }
         );
-        if(!doc) return res.status(404).send("File not found");
+        if (!doc) return res.status(404).send("File not found");
         res.redirect(`/uploads/${doc.filename}`);
     } catch (err) {
         res.status(500).send("Error");
@@ -447,9 +447,9 @@ app.get("/view-document/:id", isLoggedIn, async (req, res) => {
 app.get("/delete-doc/:id", isLoggedIn, async (req, res) => {
     try {
         // 1. Delete the document entry from MongoDB
-        const doc = await docModel.findOneAndDelete({ 
-            _id: req.params.id, 
-            user: req.user.userid 
+        const doc = await docModel.findOneAndDelete({
+            _id: req.params.id,
+            user: req.user.userid
         });
 
         // 2. Delete the actual file from the 'uploads' folder
@@ -465,7 +465,7 @@ app.get("/delete-doc/:id", isLoggedIn, async (req, res) => {
     } catch (err) {
         console.error(err);
         // If error, safely go back to documents
-        res.redirect("/documents"); 
+        res.redirect("/documents");
     }
 });
 
@@ -502,29 +502,21 @@ app.get("/settings", isLoggedIn, async (req, res) => {
     const user = await userModel.findOne({ email: req.user.email });
     res.render("settings", { user });
 });
-app.post('/update-overview', async (req, res) => {
+app.post('/update-overview', isLoggedIn, async (req, res) => {
     try {
-        // 1. Auth: Get the token from cookies
-        const token = req.cookies.token;
-        if (!token) return res.redirect("/login?message=Please log in");
-
-        // 2. Decode the token to get the User ID
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const userId = decoded.userid;
-
-        // 3. Get the data from the form
-        // Your input tag is: <input name="name" ... >
+        // 1. Get the data from the form
         const { name } = req.body;
 
-        // 4. Update the User in the Database
+        // 2. Update the User in the Database
+        // Use req.user.userid (set by isLoggedIn)
         await userModel.findOneAndUpdate(
-            { _id: userId },
-            { name: name } // Updates the 'name' field in your DB
+            { _id: req.user.userid },
+            { name: name }
         );
 
         console.log("Profile name updated to:", name);
 
-        // 5. Redirect back to the overview page to see changes
+        // 3. Redirect back to the overview page to see changes
         res.redirect('/overview');
 
     } catch (error) {
@@ -532,8 +524,8 @@ app.post('/update-overview', async (req, res) => {
         res.status(500).send("Error updating profile");
     }
 });
-// 2. Route to HANDLE the form submission (POST) - This is what you are missing!
-app.post('/change-password', async (req, res) => {
+// 2. Route to HANDLE the form submission (POST)
+app.post('/change-password', isLoggedIn, async (req, res) => {
     try {
         const { currentPassword, newPassword, confirmPassword } = req.body;
 
@@ -542,38 +534,30 @@ app.post('/change-password', async (req, res) => {
             return res.send("New passwords do not match");
         }
 
-        // 2. Auth: Get User ID from the Token (Cookie)
-        const token = req.cookies.token;
-        if (!token) return res.redirect("/login");
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const userId = decoded.userid;
-
-        // 3. Database: Find the user
-        const user = await userModel.findOne({ _id: userId });
+        // 2. Database: Find the user (req.user.userid is available thanks to isLoggedIn)
+        const user = await userModel.findOne({ _id: req.user.userid });
         if (!user) return res.redirect("/login");
 
-        // 4. Security: Verify the CURRENT password matches the database
+        // 3. Security: Verify the CURRENT password matches the database
         const isMatch = await bcryptjs.compare(currentPassword, user.password);
         if (!isMatch) {
-            return res.send("Incorrect current password"); 
+            return res.send("Incorrect current password");
         }
 
-        // 5. Hash the NEW password
-        const salt = await bcryptjs.genSalt(10);
-        const hashedPassword = await bcryptjs.hash(newPassword, salt);
+        // 4. Hash the NEW password
+        const hashedPassword = await bcryptjs.hash(newPassword, 10);
 
-        // 6. Update the database
+        // 5. Update the database
         await userModel.findOneAndUpdate(
-            { _id: userId },
+            { _id: req.user.userid },
             { password: hashedPassword }
         );
 
-        console.log("Password updated successfully for user:", userId);
-        
-        // 7. Success: Redirect back to settings or logout
-        res.redirect('/settings'); 
-        
+        console.log("Password updated successfully for user:", req.user.userid);
+
+        // 6. Success: Redirect back to settings or logout
+        res.redirect('/settings');
+
     } catch (error) {
         console.error("Change Password Error:", error);
         res.status(500).send("Server Error");
@@ -584,7 +568,7 @@ app.post('/change-password', async (req, res) => {
 app.post('/delete-account', async (req, res) => {
     try {
         // 1. GET THE TOKEN FROM COOKIES
-        const token = req.cookies.token; 
+        const token = req.cookies.token;
 
         // If no token, they aren't logged in
         if (!token) {
@@ -594,10 +578,10 @@ app.post('/delete-account', async (req, res) => {
         // 2. VERIFY & DECODE THE TOKEN
         // We use the same secret you used in your login route
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
+
         // In your login route, you signed it as: { userid: user._id }
         // So we extract it here:
-        const userId = decoded.userid; 
+        const userId = decoded.userid;
 
         console.log("Authorized to delete User ID:", userId);
 
