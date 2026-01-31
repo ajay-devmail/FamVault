@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,193 +9,244 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 </head>
-<body class="bg-gray-50 text-slate-800">
+
+<body class="bg-gray-50 dark:bg-slate-900 text-slate-800 dark:text-white font-inter transition-colors duration-200">
 
     <div class="flex h-screen overflow-hidden">
-        
-        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
+
+        <aside
+            class="w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-white/10 hidden md:flex flex-col transition-colors duration-200">
             <div class="p-6 flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg">
                     <i data-lucide="shield" class="w-6 h-6 text-white fill-current"></i>
                 </div>
-                <span class="text-xl font-bold text-slate-900">FamVault</span>
+                <span class="text-xl font-bold text-slate-900 dark:text-white transition-colors">FamVault</span>
             </div>
 
             <nav class="flex-1 px-4 space-y-1 mt-4">
-                <a href="/overview" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5 group-hover:text-blue-600"></i>
+                <a href="/overview"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors group">
+                    <i data-lucide="layout-dashboard"
+                        class="w-5 h-5 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
                     <span class="font-medium">Overview</span>
                 </a>
-                <a href="/documents" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="file-text" class="w-5 h-5 group-hover:text-blue-600"></i>
+                <a href="/documents"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors group">
+                    <i data-lucide="file-text"
+                        class="w-5 h-5 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
                     <span class="font-medium">Documents</span>
                 </a>
-                <a href="/medical-records" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="heart-pulse" class="w-5 h-5 group-hover:text-blue-600"></i>
+                <a href="/medical-records"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors group">
+                    <i data-lucide="heart-pulse"
+                        class="w-5 h-5 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
                     <span class="font-medium">Medical Records</span>
                 </a>
-                <a href="/emergency-contacts" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="phone" class="w-5 h-5 group-hover:text-blue-600"></i>
+                <a href="/emergency-contacts"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors group">
+                    <i data-lucide="phone" class="w-5 h-5 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
                     <span class="font-medium">Emergency Contacts</span>
                 </a>
-                <a href="/reminders" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="bell" class="w-5 h-5 group-hover:text-blue-600"></i>
+                <a href="/reminders"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors group">
+                    <i data-lucide="bell" class="w-5 h-5 group-hover:text-blue-600 dark:group-hover:text-blue-400"></i>
                     <span class="font-medium">Reminders</span>
                 </a>
             </nav>
 
-            <div class="p-4 border-t border-gray-100 space-y-1">
-                <a href="/settings" class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg transition-colors shadow-sm shadow-blue-200">
+            <div class="p-4 border-t border-gray-100 dark:border-white/10 space-y-1">
+                <a href="/profile"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors">
+                    <% if (user.profilePic) { %>
+                        <img src="<%= user.profilePic %>" alt="Profile"
+                            class="w-6 h-6 rounded-full object-cover ring-2 ring-white/10">
+                        <% } else { %>
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <% } %>
+                                <span class="font-medium">Profile</span>
+                </a>
+                <a href="/settings"
+                    class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg transition-colors shadow-sm shadow-blue-200 dark:shadow-blue-900/20">
                     <i data-lucide="settings" class="w-5 h-5"></i>
                     <span class="font-medium">Settings</span>
                 </a>
-                <a href="/logout" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                <a href="/logout"
+                    class="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors">
                     <i data-lucide="log-out" class="w-5 h-5"></i>
                     <span class="font-medium">Sign Out</span>
                 </a>
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto">
-            <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
-                <div class="max-w-4xl mx-auto px-8 py-5">
-                    <h1 class="text-2xl font-bold text-slate-900">Account Settings</h1>
-                    <p class="text-slate-500 text-sm mt-1">Manage your overview and security preferences.</p>
+        <main class="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-900/50 transition-colors">
+            <header
+                class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-white/10 sticky top-0 z-10 transition-colors">
+                <div class="max-w-4xl mx-auto px-8 py-5 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Account Settings</h1>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage your overview and security
+                            preferences.</p>
+                    </div>
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-gray-200 dark:hover:text-white transition-colors">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                    </button>
                 </div>
             </header>
 
             <div class="max-w-4xl mx-auto px-8 py-8 space-y-8">
 
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-slate-900">overview Information</h2>
-                        <p class="text-sm text-slate-500">Update your account details.</p>
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-white/5 shadow-sm overflow-hidden transition-colors">
+                    <div class="p-6 border-b border-gray-100 dark:border-white/5">
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Overview Information</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Update your account details.</p>
                     </div>
+
                     <div class="p-6 space-y-6">
                         <div class="flex items-center gap-6">
-                            <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-2xl font-bold border border-slate-200">
+                            <div
+                                class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-300 text-2xl font-bold border border-slate-200 dark:border-white/10">
                                 <%= user.name ? user.name.charAt(0).toUpperCase() : 'U' %>
                             </div>
                             <div>
-                                <h3 class="font-bold text-slate-900 text-lg"><%= user.name %></h3>
-                                <p class="text-slate-500"><%= user.email %></p>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-lg">
+                                    <%= user.name %>
+                                </h3>
+                                <p class="text-slate-500 dark:text-slate-400">
+                                    <%= user.email %>
+                                </p>
                             </div>
                         </div>
-<!-- Update overview information -->
+                        <!-- Update overview information -->
                         <form action="/update-overview" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
-                                <input type="text" name="name" value="<%= user.name %>" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none border-gray-300">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full
+                                    Name</label>
+                                <input type="text" name="name" value="<%= user.name %>"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none border-gray-300 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                                <input type="email" value="<%= user.email %>" disabled class="w-full px-4 py-2 border rounded-lg bg-gray-50 text-gray-500 border-gray-300 cursor-not-allowed">
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email
+                                    Address</label>
+                                <input type="email" value="<%= user.email %>" disabled
+                                    class="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-slate-900/50 text-gray-500 dark:text-slate-500 border-gray-300 dark:border-white/5 cursor-not-allowed">
                                 <p class="text-xs text-slate-400 mt-1">Email cannot be changed.</p>
                             </div>
                             <div class="md:col-span-2 flex justify-end">
-                                <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">Save Changes</button>
+                                <button type="submit"
+                                    class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">Save
+                                    Changes</button>
                             </div>
                         </form>
                     </div>
                 </div>
-<!-- Change password -->
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-slate-900">Security</h2>
-                        <p class="text-sm text-slate-500">Manage your password and authentication.</p>
+                <!-- Change password -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-white/5 shadow-sm overflow-hidden transition-colors">
+                    <div class="p-6 border-b border-gray-100 dark:border-white/5">
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Security</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Manage your password and authentication.
+                        </p>
                     </div>
-                    <div class="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
-    
-    <div class="bg-gray-50 px-8 py-6 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-800">Security & Login</h2>
-        <p class="text-sm text-gray-500 mt-1">Update your password to keep your account secure.</p>
-    </div>
+                    <div
+                        class="max-w-2xl mx-auto mt-10 bg-white dark:bg-slate-800 shadow-lg dark:shadow-none rounded-xl overflow-hidden border border-gray-100 dark:border-white/5">
 
-    <div class="p-8">
-        <form action="/change-password" method="POST" class="space-y-6">
-            
-            <div>
-                <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-2">
-                    Current Password
-                </label>
-                <input 
-                    type="password" 
-                    id="currentPassword" 
-                    name="currentPassword" 
-                    required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
-                    placeholder="Enter your current password"
-                >
-            </div>
+                        <div
+                            class="bg-gray-50 dark:bg-slate-900/50 px-8 py-6 border-b border-gray-200 dark:border-white/5">
+                            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Security & Login</h2>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Update your password to keep your
+                                account secure.</p>
+                        </div>
 
-            <div>
-                <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-2">
-                    New Password
-                </label>
-                <input 
-                    type="password" 
-                    id="newPassword" 
-                    name="newPassword" 
-                    required
-                    minlength="8"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
-                    placeholder="Minimum 8 characters"
-                >
-            </div>
+                        <div class="p-8">
+                            <form action="/change-password" method="POST" class="space-y-6">
 
-            <div>
-                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
-                    Confirm New Password
-                </label>
-                <input 
-                    type="password" 
-                    id="confirmPassword" 
-                    name="confirmPassword" 
-                    required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
-                    placeholder="Re-enter your new password"
-                >
-            </div>
+                                <div>
+                                    <label for="currentPassword"
+                                        class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                                        Current Password
+                                    </label>
+                                    <input type="password" id="currentPassword" name="currentPassword" required
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                                        placeholder="Enter your current password">
+                                </div>
 
-            <div class="pt-4 flex items-center justify-end space-x-4">
-                <button type="button" class="px-6 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors">
-                    Cancel
-                </button>
-                <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-colors">
-                    Update Password
-                </button>
-            </div>
+                                <div>
+                                    <label for="newPassword"
+                                        class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                                        New Password
+                                    </label>
+                                    <input type="password" id="newPassword" name="newPassword" required minlength="8"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                                        placeholder="Minimum 8 characters">
+                                </div>
 
-        </form>
-    </div>
-</div>
+                                <div>
+                                    <label for="confirmPassword"
+                                        class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                                        Confirm New Password
+                                    </label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                                        placeholder="Re-enter your new password">
+                                </div>
+
+                                <div class="pt-4 flex items-center justify-end space-x-4">
+                                    <button type="button"
+                                        class="px-6 py-2.5 text-sm font-medium text-gray-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 dark:focus:ring-slate-700 transition-colors">
+                                        Cancel
+                                    </button>
+                                    <button type="submit"
+                                        class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md transition-colors">
+                                        Update Password
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
                 </div>
-<!-- Delete Account -->
-    <div class="max-w-2xl mx-auto mt-8 bg-white shadow-lg rounded-xl overflow-hidden border border-red-200">
-    
-    <div class="bg-red-50 px-8 py-6 border-b border-red-100">
-        <h2 class="text-xl font-semibold text-red-700">Danger Zone</h2>
-        <p class="text-sm text-red-600 mt-1">Irreversible actions regarding your account.</p>
-    </div>
+                <!-- Delete Account -->
+                <div
+                    class="max-w-2xl mx-auto mt-8 bg-white dark:bg-slate-800 shadow-lg dark:shadow-none rounded-xl overflow-hidden border border-red-200 dark:border-red-500/20">
 
-    <div class="p-8 flex items-center justify-between">
-        <div>
-            <h3 class="text-sm font-medium text-gray-900">Delete Account</h3>
-            <p class="text-sm text-gray-500 mt-1">
-                Once you delete your account, there is no going back. Please be certain.
-            </p>
-        </div>
+                    <div class="bg-red-50 dark:bg-red-500/10 px-8 py-6 border-b border-red-100 dark:border-red-500/20">
+                        <h2 class="text-xl font-semibold text-red-700 dark:text-red-400">Danger Zone</h2>
+                        <p class="text-sm text-red-600 dark:text-red-400 mt-1">Irreversible actions regarding your
+                            account.</p>
+                    </div>
 
-        <form action="/delete-account" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
-            <button type="submit" class="px-5 py-2.5 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
-                Delete Account
-            </button>
-        </form>
-    </div>
-</div>
+                    <div class="p-8 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Delete Account</h3>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+                                Once you delete your account, there is no going back. Please be certain.
+                            </p>
+                        </div>
+
+                        <form action="/delete-account" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
+                            <button type="submit"
+                                class="px-5 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 bg-white dark:bg-slate-800 border border-red-300 dark:border-red-500/20 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                                Delete Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
                 <div class="text-center text-sm text-slate-400 pb-8">
                     FamVault v1.0.0 • Secured by 256-bit Encryption
@@ -206,6 +258,25 @@
 
     <script>
         lucide.createIcons();
+
+        // Theme Logic
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Initialize Theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     </script>
 </body>
+
 </html>
