@@ -4,15 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify OTP</title>
+    <title>Verify OTP - FamVault</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 </head>
 
-<body class="bg-zinc-950 flex items-center justify-center w-full h-screen text-white">
-    <div class="w-full max-w-md p-8 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
-        <h2 class="text-2xl font-bold text-center text-blue-500 mb-2">Check Your Email</h2>
-        <p class="text-zinc-400 text-center mb-8 text-sm">We've sent a 6-digit code to <br> <span
-                class="text-white font-semibold">
+<body
+    class="bg-gray-50 dark:bg-zinc-950 flex items-center justify-center w-full min-h-screen text-slate-800 dark:text-white transition-colors duration-300">
+
+    <div class="absolute top-6 right-6 z-20">
+        <button onclick="toggleTheme()"
+            class="p-2 rounded-full bg-white/80 dark:bg-black/20 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-black/40 transition-all shadow-sm backdrop-blur-sm">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+        </button>
+    </div>
+
+    <div
+        class="w-full max-w-md p-8 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-xl dark:shadow-2xl transition-colors">
+        <h2 class="text-2xl font-bold text-center text-blue-600 dark:text-blue-500 mb-2">Check Your Email</h2>
+        <p class="text-slate-500 dark:text-zinc-400 text-center mb-8 text-sm">We've sent a 6-digit code to <br> <span
+                class="text-slate-900 dark:text-white font-semibold">
                 <%= email %>
             </span></p>
 
@@ -20,28 +37,28 @@
             <input type="hidden" name="email" value="<%= email %>">
             <div>
                 <input maxlength="6"
-                    class="w-full text-center text-3xl tracking-[1rem] font-bold border border-zinc-700 rounded-lg px-4 py-3 bg-zinc-800 text-white focus:ring-2 focus:ring-blue-600 outline-none placeholder-zinc-600"
+                    class="w-full text-center text-3xl tracking-[1rem] font-bold border border-gray-200 dark:border-zinc-700 rounded-lg px-4 py-3 bg-gray-50 dark:bg-zinc-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-600 outline-none placeholder-slate-300 dark:placeholder-zinc-600 transition-colors"
                     type="text" name="otp" placeholder="000000" required>
             </div>
             <button
-                class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-lg font-bold transition-all shadow-lg shadow-blue-500/20"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-bold transition-all shadow-lg shadow-blue-500/20"
                 type="submit">
                 Verify Account
             </button>
         </form>
 
-        <div class="mt-6 text-center pt-6 border-t border-zinc-800">
-            <p class="text-xs text-zinc-500 mb-2">Didn't receive the code?</p>
+        <div class="mt-6 text-center pt-6 border-t border-gray-100 dark:border-zinc-800">
+            <p class="text-xs text-slate-500 dark:text-zinc-500 mb-2">Didn't receive the code?</p>
 
             <form action="/resend-otp" method="POST" id="resendForm" class="inline-block">
                 <input type="hidden" name="email" value="<%= email %>">
 
                 <button id="resendBtn" type="submit"
-                    class="text-blue-500 text-sm font-semibold hover:text-blue-400 transition-colors disabled:text-zinc-600 disabled:cursor-not-allowed">
+                    class="text-blue-600 dark:text-blue-500 text-sm font-semibold hover:text-blue-500 dark:hover:text-blue-400 transition-colors disabled:text-slate-400 dark:disabled:text-zinc-600 disabled:cursor-not-allowed">
                     Resend OTP
                 </button>
 
-                <span id="timerText" class="text-zinc-500 text-xs ml-1 hidden">
+                <span id="timerText" class="text-slate-400 dark:text-zinc-500 text-xs ml-1 hidden">
                     (Wait <span id="seconds">10</span>s)
                 </span>
             </form>
@@ -49,6 +66,26 @@
     </div>
 
     <script>
+        lucide.createIcons();
+
+        // Theme Logic
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Initialize Theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
         const resendBtn = document.getElementById('resendBtn');
         const timerText = document.getElementById('timerText');
         const secondsSpan = document.getElementById('seconds');
@@ -98,5 +135,3 @@
 </body>
 
 </html>
-
-```
