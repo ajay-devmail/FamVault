@@ -1,167 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Reminders</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-gray-50 text-slate-800">
 
-<body class="bg-gray-50 flex min-h-screen">
-    <div
-        class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center z-50">
-        <div class="flex items-center gap-2">
-            <div class="bg-blue-600 p-1 rounded">
-                <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+    <div class="flex h-screen overflow-hidden">
+        
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
+            <div class="p-6 flex items-center gap-3">
+                <div class="bg-blue-600 p-1.5 rounded-lg">
+                    <i data-lucide="shield" class="w-6 h-6 text-white fill-current"></i>
+                </div>
+                <span class="text-xl font-bold text-slate-900">FamVault</span>
             </div>
-            <span class="font-bold text-slate-900">FamVault</span>
-        </div>
-        <button id="menuBtn" class="p-2 text-slate-600">
-            <i data-lucide="menu"></i>
-        </button>
-    </div>
 
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 
-        transition-transform duration-300 transform -translate-x-full 
-        md:translate-x-0 md:static md:flex flex-col h-screen shrink-0">
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a href="/overview" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 group-hover:text-blue-600"></i>
+                    <span class="font-medium">Overview</span>
+                </a>
+                <a href="/documents" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="file-text" class="w-5 h-5 group-hover:text-blue-600"></i>
+                    <span class="font-medium">Documents</span>
+                </a>
+                <a href="/medical-records" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="heart-pulse" class="w-5 h-5 group-hover:text-blue-600"></i>
+                    <span class="font-medium">Medical Records</span>
+                </a>
+                <a href="/emergency-contacts" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="phone" class="w-5 h-5 group-hover:text-blue-600"></i>
+                    <span class="font-medium">Emergency Contacts</span>
+                </a>
 
-        <div class="p-6 flex items-center gap-3">
-            <div class="bg-blue-600 p-1.5 rounded-lg">
-                <i data-lucide="shield" class="w-6 h-6 text-white fill-current"></i>
+                <a href="/reminders" class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg transition-colors shadow-sm shadow-blue-200">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="font-medium">Reminders</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100 space-y-1">
+                <a href="/settings" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span class="font-medium">Settings</span>
+                </a>
+                <a href="/logout" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span class="font-medium">Sign Out</span>
+                </a>
             </div>
-            <span class="text-xl font-bold text-slate-900">FamVault</span>
-        </div>
+        </aside>
 
-        <nav class="flex-1 px-4 space-y-1 mt-4">
-            <a href="/overview"
-                class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                <span class="font-medium">Overview</span>
-            </a>
-            <a href="/documents"
-                class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                <i data-lucide="file-text" class="w-5 h-5"></i>
-                <span class="font-medium">Documents</span>
-            </a>
-            <a href="/medical-records"
-                class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                <i data-lucide="heart-pulse" class="w-5 h-5"></i>
-                <span class="font-medium">Medical Records</span>
-            </a>
-            <a href="/emergency-contacts"
-                class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                <i data-lucide="phone" class="w-5 h-5"></i>
-                <span class="font-medium">Contacts</span>
-            </a>
-            <a href="/reminders" class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg shadow-sm">
-                <i data-lucide="bell" class="w-5 h-5"></i>
-                <span class="font-medium">Reminders</span>
-            </a>
-        </nav>
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-3xl font-bold text-slate-900 mb-8">Reminders</h1>
 
-        <div class="p-4 border-t border-gray-100">
-            <a href="/settings"
-                class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                <i data-lucide="settings" class="w-5 h-5"></i>
-                <span class="font-medium">Settings</span>
-            </a>
-
-            <a href="/logout"
-                class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                <i data-lucide="log-out" class="w-5 h-5"></i>
-                <span class="font-medium">Sign Out</span>
-            </a>
-        </div>
-    </aside>
-
-    <main class="flex-1 p-8 pt-20 md:pt-8 overflow-y-auto">
-        <div class="max-w-5xl mx-auto">
-            <header class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold text-slate-900">Reminders</h1>
-                <a href="/overview" class="text-blue-600 hover:underline">Back to Dashboard</a>
-            </header>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <% if(reminders.length===0) { %>
-                    <div class="p-8 text-center text-slate-500">No active reminders set.</div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <% if(reminders.length === 0) { %>
+                        <div class="p-8 text-center text-slate-500">No active reminders set.</div>
                     <% } else { %>
                         <table class="w-full text-left">
                             <thead class="bg-slate-50 border-b border-gray-100 text-slate-500 text-sm uppercase">
                                 <tr>
                                     <th class="p-4 font-semibold">Status</th>
                                     <th class="p-4 font-semibold">Task / Document</th>
-                                    <th class="p-4 font-semibold text-center">Due Date</th>
-                                    <th class="p-4 font-semibold text-right">Action</th>
+                                    <th class="p-4 font-semibold">Due Date</th>
+                                    <th class="p-4 font-semibold">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <% reminders.forEach(doc=> {
+                                <% reminders.forEach(doc => { 
                                     const today = new Date();
                                     const due = new Date(doc.reminderDate);
                                     const diffTime = due - today;
-                                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                                    const isUrgent = diffDays <= 10 && diffDays>= 0;
-                                        %>
-                                        <tr class="hover:bg-slate-50 transition">
-                                            <td class="p-4">
-                                                <% if(isUrgent) { %>
-                                                    <span
-                                                        class="px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold animate-pulse">
-                                                        Due in <%= diffDays %> days
-                                                    </span>
-                                                    <% } else if (diffDays < 0) { %>
-                                                        <span
-                                                            class="px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-bold">Overdue</span>
-                                                        <% } else { %>
-                                                            <span
-                                                                class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">On
-                                                                Track</span>
-                                                            <% } %>
-                                            </td>
-                                            <td class="p-4">
-                                                <div class="font-bold text-slate-900">
-                                                    <%= doc.reminderNote %>
-                                                </div>
-                                                <div class="text-xs text-slate-400">Linked to: <%= doc.title %>
-                                                </div>
-                                            </td>
-                                            <td class="p-4 text-slate-600 font-medium text-center">
-                                                <%= due.toLocaleDateString() %>
-                                            </td>
-                                            <td class="p-4 text-right">
-                                                <a href="/view-document/<%= doc._id %>" target="_blank"
-                                                    class="text-blue-600 hover:underline text-sm font-medium">View
-                                                    Doc</a>
-                                            </td>
-                                        </tr>
-                                        <% }) %>
+                                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                                    const isUrgent = diffDays <= 10 && diffDays >= 0;
+                                %>
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="p-4">
+                                        <% if(isUrgent) { %>
+                                            <span class="px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold animate-pulse">
+                                                Due in <%= diffDays %> days
+                                            </span>
+                                        <% } else if (diffDays < 0) { %>
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-bold">Overdue</span>
+                                        <% } else { %>
+                                            <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">On Track</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="font-bold text-slate-900"><%= doc.reminderNote %></div>
+                                        <div class="text-xs text-slate-400">Linked to: <%= doc.title %></div>
+                                    </td>
+                                    <td class="p-4 text-slate-600 font-medium">
+                                        <%= due.toLocaleDateString() %>
+                                    </td>
+                                    <td class="p-4">
+                                        <a href="/view-document/<%= doc._id %>" target="_blank" class="text-blue-600 hover:underline text-sm">View Doc</a>
+                                    </td>
+                                </tr>
+                                <% }) %>
                             </tbody>
                         </table>
-                        <% } %>
+                    <% } %>
+                </div>
             </div>
-        </div>
-    </main>
-
-    <script>
-        // 1. Render Icons
-        lucide.createIcons();
-
-        // 2. Sidebar Toggle Logic
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-        });
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth < 768 && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-                sidebar.classList.add('-translate-x-full');
-            }
-        });
-    </script>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
 </body>
-
 </html>
