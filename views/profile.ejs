@@ -13,43 +13,130 @@
 </head>
 <body class="bg-[#F8FAFC]">
 
+    <div id="editProfileModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center overflow-y-auto">
+        <div class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl m-4 my-8">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-slate-900">Edit Profile</h3>
+                <button onclick="toggleEditModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            
+            <form action="/update-profile" method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
+                
+                <h4 class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">Personal Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Profile Photo</label>
+                        <input type="file" name="profilePic" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Full Name</label>
+                        <input type="text" name="name" value="<%= user.name %>" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Email (Locked)</label>
+                        <input type="email" name="email" value="<%= user.email %>" readonly class="w-full px-3 py-2 border rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Phone Number</label>
+                        <input type="text" name="phone" value="<%= user.phone %>" placeholder="+91..." class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Date of Birth</label>
+                        <input type="date" name="dob" value="<%= user.dob %>" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Gender</label>
+                        <select name="gender" class="w-full px-3 py-2 border rounded-lg bg-white">
+                            <option value="<%= user.gender %>" selected><%= user.gender %></option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Blood Group</label>
+                        <select name="bloodGroup" class="w-full px-3 py-2 border rounded-lg bg-white">
+                            <option value="<%= user.bloodGroup %>" selected><%= user.bloodGroup || 'Select' %></option>
+                            <option value="A+">A+</option> <option value="A-">A-</option>
+                            <option value="B+">B+</option> <option value="B-">B-</option>
+                            <option value="O+">O+</option> <option value="O-">O-</option>
+                            <option value="AB+">AB+</option> <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Address</label>
+                        <textarea name="address" rows="2" class="w-full px-3 py-2 border rounded-lg"><%= user.address %></textarea>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                <h4 class="text-xs font-bold text-red-600 uppercase tracking-wider mb-2">Medical & Emergency Info</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Known Allergies</label>
+                        <input type="text" name="allergies" value="<%= user.allergies %>" placeholder="e.g. Peanuts, Penicillin" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Medical Conditions</label>
+                        <input type="text" name="conditions" value="<%= user.conditions %>" placeholder="e.g. Asthma, Diabetes" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-6 border-t mt-4">
+                    <button type="button" onclick="toggleEditModal()" class="px-4 py-2 text-slate-500 hover:bg-gray-100 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="flex h-screen overflow-hidden">
         
-       <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
             <div class="p-6 flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg">
                     <i data-lucide="shield" class="w-6 h-6 text-white fill-current"></i>
                 </div>
                 <span class="text-xl font-bold text-slate-900">FamVault</span>
             </div>
-            <nav class="flex-1 px-4 space-y-1">
-                <a href="/overview" class="flex items-center gap-3 px-4 py-3 text-slate-600  hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a href="/overview" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 group-hover:text-blue-600"></i>
                     <span class="font-medium">Overview</span>
                 </a>
-                <a href="/documents" class="flex items-center gap-3 px-4 py-3 text-slate-600  hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                <a href="/documents" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="file-text" class="w-5 h-5 group-hover:text-blue-600"></i>
                     <span class="font-medium">Documents</span>
                 </a>
-                <a href="/medical" class="flex items-center gap-3 px-4 py-3 text-slate-600  hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+                <a href="/medical-records" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="heart-pulse" class="w-5 h-5 group-hover:text-blue-600"></i>
                     <span class="font-medium">Medical Records</span>
                 </a>
-                <a href="/contacts" class="flex items-center gap-3 px-4 py-3 text-slate-600  hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
-                    <i data-lucide="phone" class="w-5 h-5"></i>
+                <a href="/emergency-contacts" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="phone" class="w-5 h-5 group-hover:text-blue-600"></i>
                     <span class="font-medium">Emergency Contacts</span>
                 </a>
-                <a href="/reminders" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                    <i data-lucide="bell" class="w-5 h-5"></i>
+                <a href="/reminders" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-colors group">
+                    <i data-lucide="bell" class="w-5 h-5 group-hover:text-blue-600"></i>
                     <span class="font-medium">Reminders</span>
                 </a>
             </nav>
 
-            <div class="p-4 border-t border-slate-100 space-y-1">
-                <a href="/profile" class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-600 rounded-lg transition-colors">
+            <div class="p-4 border-t border-gray-100 space-y-1">
+                <a href="/profile" class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg transition-colors shadow-sm shadow-blue-200">
                     <i data-lucide="user" class="w-5 h-5"></i>
                     <span class="font-medium">Profile</span>
                 </a>
+                
                 <a href="/settings" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
                     <i data-lucide="settings" class="w-5 h-5"></i>
                     <span class="font-medium">Settings</span>
@@ -62,114 +149,66 @@
         </aside>
 
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-            
             <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
                 <div>
                     <h1 class="text-2xl font-bold text-slate-800">My Profile</h1>
                     <p class="text-slate-500 text-sm">Manage your personal information</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button class="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 bg-red-50 rounded-lg font-medium hover:bg-red-100 transition-colors">
+                    <a href="/emergency-mode" class="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 bg-red-50 rounded-lg font-medium hover:bg-red-100 transition-colors">
                         <i data-lucide="alert-triangle" class="w-4 h-4"></i>
                         Emergency Mode
-                    </button>
-                   
+                    </a>
                 </div>
             </header>
 
             <main class="flex-1 overflow-y-auto p-8">
                 <div class="max-w-4xl mx-auto">
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                        
                         <div class="h-32 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
                         
                         <div class="px-8 pb-8">
                             <div class="relative flex justify-between items-end -mt-12 mb-8">
-                               <div class="p-1.5 bg-white rounded-2xl shadow-lg ring-4 ring-white">
-            <div class="w-32 h-32 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden border-2 border-dashed border-slate-200 group-hover:border-blue-400 transition-colors">
-                <% if (user.profilePic) { %>
-                    <img src="<%= user.profilePic %>" alt="Profile" class="w-full h-full object-cover">
-                <% } else { %>
-                    <i data-lucide="user" class="w-16 h-16 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
-                <% } %>
-            </div>
-        </div>
-                                <button class="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors">
-                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
-                                    Edit Profile
+                                <div class="p-1.5 bg-white rounded-2xl shadow-lg ring-4 ring-white">
+                                    <div class="w-32 h-32 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden border-2 border-dashed border-slate-200">
+                                        <% if (user.profilePic) { %>
+                                            <img src="<%= user.profilePic %>" alt="Profile" class="w-full h-full object-cover">
+                                        <% } else { %>
+                                            <i data-lucide="user" class="w-16 h-16 text-slate-400"></i>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <button onclick="toggleEditModal()" class="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors">
+                                    <i data-lucide="edit-3" class="w-4 h-4"></i> Edit Profile
                                 </button>
                             </div>
 
-                           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.name %>
-        </div>
-    </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                <div><label class="text-xs font-semibold text-slate-400 uppercase">Full Name</label><div class="text-lg font-semibold text-slate-800"><%= user.name %></div></div>
+                                <div><label class="text-xs font-semibold text-slate-400 uppercase">Email</label><div class="text-lg font-semibold text-slate-800"><%= user.email %></div></div>
+                                <div><label class="text-xs font-semibold text-slate-400 uppercase">Phone</label><div class="text-lg font-semibold text-slate-800"><%= user.phone || 'N/A' %></div></div>
+                                <div><label class="text-xs font-semibold text-slate-400 uppercase">Date of Birth</label><div class="text-lg font-semibold text-slate-800"><%= user.dob || 'N/A' %></div></div>
+                                <div><label class="text-xs font-semibold text-slate-400 uppercase">Gender</label><div class="text-lg font-semibold text-slate-800"><%= user.gender || 'N/A' %></div></div>
+                                <div><label class="text-xs font-semibold text-slate-400 uppercase">Blood Group</label><div class="text-lg font-semibold text-red-600 bg-red-50 inline-block px-2 rounded"><%= user.bloodGroup || 'N/A' %></div></div>
+                                <div class="md:col-span-2"><label class="text-xs font-semibold text-slate-400 uppercase">Address</label><div class="text-lg font-semibold text-slate-800"><%= user.address || 'N/A' %></div></div>
+                            </div>
 
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email Address</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.email %>
-        </div>
-    </div>
-
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Number</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.phone || '+91 XXXXX-XXXXX' %>
-        </div>
-    </div>
-
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Date of Birth</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.dob %>
-        </div>
-    </div>
-
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Gender</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.gender || 'Not Specified' %>
-        </div>
-    </div>
-
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Family Role</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.role %>
-        </div>
-    </div>
-
-    <div class="space-y-1">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Blood Group</label>
-        <div class="text-lg font-semibold text-red-600 p-3 bg-red-50 rounded-lg border border-red-100">
-            <%= user.bloodGroup || 'O+' %>
-        </div>
-    </div>
-
-    <div class="space-y-1 md:col-span-2">
-        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Residential Address</label>
-        <div class="text-lg font-semibold text-slate-800 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <%= user.address || 'Enter your full address here' %>
-        </div>
-    </div>
-</div>
-
-                            <div class="mt-10 pt-6 border-t border-slate-100">
-                                <h3 class="font-semibold text-slate-800 mb-4">Help and Support</h3>
-                                 <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                    <div>
-                                        <p class="text-slate-600 font-medium">Need help with your vault?</p>
-                                        <p class="text-sm text-slate-400">Our team is available 24/7 for emergency access support.</p>
+                            <div class="border-t border-slate-100 pt-6">
+                                <h3 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                    <i data-lucide="activity" class="w-4 h-4 text-red-500"></i> Medical Information
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                                        <label class="text-xs font-bold text-red-400 uppercase">Allergies</label>
+                                        <div class="text-base font-medium text-slate-800"><%= user.allergies || 'None' %></div>
                                     </div>
-                                    <div class="font-bold text-blue-600 text-lg">
-                                        famvault2621@gmail.com
+                                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                        <label class="text-xs font-bold text-blue-400 uppercase">Medical Conditions</label>
+                                        <div class="text-base font-medium text-slate-800"><%= user.conditions || 'None' %></div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -179,6 +218,10 @@
 
     <script>
         lucide.createIcons();
+        function toggleEditModal() {
+            const modal = document.getElementById('editProfileModal');
+            modal.classList.toggle('hidden');
+        }
     </script>
 </body>
 </html>
