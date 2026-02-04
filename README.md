@@ -1,10 +1,3 @@
-<img width="1710" height="1107" alt="Screenshot 2026-02-04 at 9 33 10 PM" src="https://github.com/user-attachments/assets/5f53cd40-edd9-40b3-9d00-addc655b0b59" />
-<img width="1710" height="1107" alt="Screenshot 2026-02-04 at 9 32 58 PM" src="https://github.com/user-attachments/assets/08e268f8-ebaf-4296-8d1a-5782221df02a" />
-<img width="1710" height="1107" alt="Screenshot 2026-02-04 at 9 32 14 PM" src="https://github.com/user-attachments/assets/ed95c1ec-1ba8-43f5-a129-011feababeef" />
-<img width="1710" height="1107" alt="Screenshot 2026-02-04 at 9 32 10 PM" src="https://github.com/user-attachments/assets/0ade6bd7-f5e4-49a1-9eb7-167da6d658ef" />
-<img width="1710" height="1107" alt="Screenshot 2026-02-04 at 9 31 46 PM" src="https://github.com/user-attachments/assets/8a43ccbc-42bd-4b2d-8adb-a697f6742aa7" />
-<img width="1710" height="1107" alt="Screenshot 2026-02-04 at 9 31 40 PM" src="https://github.com/user-attachments/assets/347eab45-861c-4189-97a9-1695ee24c4b0" />
-
 <!-- 
  ## ✨ Features
 * **Dynamic Dashboard:** Overview of total documents and pending reminders.
